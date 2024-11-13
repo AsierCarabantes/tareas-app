@@ -7,11 +7,14 @@
 </head>
 <body>
     <h1>Lista trabajadores</h1>
-    <a href="/trabajadores/create">Rellenar formulario</a>
     <ul>
         @foreach ($trabajadores as $trabajador)
             <li>{{ $trabajador->nombre }} {{ $trabajador->apellido }}</li>
         @endforeach
     </ul>
+
+    <br>
+    
+    <a href="/trabajadores/create">Añadir trabajadores</a>
 </body>
 </html>

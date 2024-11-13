@@ -7,6 +7,15 @@
 </head>
 <body>
     <h1>Lista tareas</h1>
-    <a href="/tareas/create">Rellenar formulario</a>
+    <ul>
+        @foreach ($tareas as $tarea)
+            <li>Título: {{ $tarea->titulo }} | Descripción: {{ $tarea->descripcion }}</li>
+        @endforeach
+    </ul>
+
+    <br>
+
+    <a href="/tareas/create">Añadir tareas</a>
+    <a href="/tareas/edit">Modificar tareas</a>
 </body>
 </html>
