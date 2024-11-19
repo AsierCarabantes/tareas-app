@@ -20,6 +20,12 @@ class TrabajadorController extends Controller {
     public function store(Request $request) {
         $trabajador = new Trabajador();
 
+        $validated = $request->validate([
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'dni' => 'required|unique:trabajadores'
+        ]);
+
         $trabajador->nombre = $request->nombre;
         $trabajador->apellido = $request->apellido;
         $trabajador->dni = $request->dni;
