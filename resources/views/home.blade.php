@@ -9,5 +9,6 @@
     <h1>Inicio</h1>
     <a href="/trabajadores/list">Mostrar trabajadores</a>
     <a href="/tareas/index">Mostrar tareas</a>
+    <a href="/departamentos/list">Mostrar departamentos</a>
 </body>
 </html>

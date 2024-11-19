@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\DepartamentoController;
 
 Route::get('/', function () {
     return view('home');
@@ -21,3 +22,8 @@ Route::post('/tareas/store', [TareaController::class, 'store']);
 Route::get('/tareas/edit/{id}', [TareaController::class, 'edit']);
 Route::put('/tareas/update/{id}', [TareaController::class, 'update']);
 Route::delete('/tareas/destroy/{id}', [TareaController::class, 'destroy']);
+
+// Departamentos
+Route::get('/departamentos/list', [DepartamentoController::class, 'index']);
+Route::get('/departamentos/create', [DepartamentoController::class, 'create']);
+Route::post('/departamentos/store', [DepartamentoController::class, 'store']);

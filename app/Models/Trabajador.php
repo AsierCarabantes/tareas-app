@@ -11,4 +11,8 @@ class Trabajador extends Model
     public function tareas() {
         return $this->hasMany(Tarea::class);
     }
+
+    public function departamentos() {
+        return $this->belongsTo(Departamentos::class);
+    }
 }
