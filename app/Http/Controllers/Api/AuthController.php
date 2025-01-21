@@ -15,7 +15,8 @@ class AuthController extends Controller {
         $validateUser = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required'
+            'password' => 'required',
+            'role' => 'required'
         ]);
 
         if($validateUser->fails()) {
@@ -30,6 +31,7 @@ class AuthController extends Controller {
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('password'));
+        $user->role = $request->role;
         $user->save();
 
         return response()->json([
@@ -74,12 +76,73 @@ class AuthController extends Controller {
     }
 
     public function logout(Request $request) {
-        
         $request->user()->tokens()->delete();
     
         return response()->json([
             'status' => true,
             'message' => 'Sesión cerrada correctamente'
+        ], 200);
+    }
+
+    public function destroy($id) {
+        if (auth()->user()->role !== 'admin') {
+            return response()->json([
+                'status' => false,
+                'message' => 'You must be an admin'
+            ], 403);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User deleted successfully'
+        ], 200);
+    }
+
+    public function update(Request $request, $id) {
+        if (auth()->user()->role !== 'admin') {
+            return response()->json([
+                'status' => false,
+                'message' => 'You must be an admin'
+            ], 403);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $validatedData = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $id,
+            'password' => 'nullable',
+            'role' => 'nullable'
+        ]);
+
+        if ($request->has('password')) {
+            $validatedData['password'] = Hash::make($request->password); // Usa Hash::make para cifrar
+        }
+
+        $user->update($validatedData);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User updated successfully',
+            'data' => $user
         ], 200);
     }
 }
